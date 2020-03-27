@@ -9,8 +9,19 @@ app.use(function(req, res, next) {
     next();
   });
 
-app.use(express.static(__dirname + '/public'));
-server.listen(8080);
+var args = process.argv.slice(2);
+    app.use(express.static(__dirname + '/public'));
+    server.listen(8080);
+
+var height, width, imgUrl;
+
+console.log(args);
+//GET ARGS FROM SERVER: npm start -- <height> <width> <imgUrl>
+if(args.length() >= 3){
+    height = args[0];
+    width = args[1];
+    imgUrl = args[2];
+}
 // WARNING: app.listen(80) will NOT work here!
 
 app.get('/', function (req, res) {
