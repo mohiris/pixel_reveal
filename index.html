@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="style.css">
+    <title>My Pixel</title>
+    <link rel="stylesheet" href="style.css" />
     <script src="index.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
     <h1>My pixel</h1>
@@ -14,13 +15,13 @@
 
         </canvas>
     </div>
- <script src="/socket.io/socket.io.js"></script>
-<script>
-  var socket = io('http://localhost');
-  socket.on('news', function (data) {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
-</script>
+
+    <script>
+      var socket = io.connect();
+      socket.on('news', function (data) {
+        console.log(data);
+        socket.emit('my other event', { my: 'data' });
+      });
+    </script>
 </body>
 </html>
