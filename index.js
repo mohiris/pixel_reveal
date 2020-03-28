@@ -8,50 +8,47 @@ app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });
-
 const args = process.argv.slice(2);
-    app.use(express.static(__dirname + '/public'));
-    server.listen(8080);
-
-var height, width, imgUrl;
+var height, width, imgUrl = 'https://www.challenges.fr/assets/img/2008/08/12/cover-r4x3w1000-58352afa3b690-bugs-bunny-3-g.jpg';
 
 //GET ARGS FROM SERVER: npm start -- <height> <width> <imgUrl>
 if(args.length >= 3){
+
     height = args[0];
     width = args[1];
-    imgUrl = args[2];
-}else{
-    console.error("Missing parementers: npm start -- <height> <width> <imgUrl>");
-}
-//render index.html
+    //imgUrl = args[2];
 
-app.get('/', function (req, res) {
-  res.sendFile(__dirname + '/public/index.html');
-});
+    app.use(express.static(__dirname + '/public'));
+    server.listen(8080);
 
-io.on('connection', function (socket) {
+    //render index.html
 
-    var userIncrement = 0;
-    socket.username = 'Anon-' + userIncrement;
-    userIncrement++;
-
-    console.log('connected')
-    socket.emit('client_connect', { hello: 'FROM THE SERVER' });
-
-    //When player is writting
-    socket.on('message', function(data){
-        socket.emit('message', {username: socket.username, message: data.message});
+    app.get('/', function (req, res) {
+        res.sendFile(__dirname + '/public/index.html');
     });
 
-});
-//WHen player disconnect from channel
-io.on('disconnect', function(socket){
+    io.on('connection', function (socket) {
 
-});
+        var userIncrement = 0;
+        socket.username = 'Anon-' + userIncrement;
+        userIncrement++;
 
+        console.log('connected')
 
+        socket.emit('init', {imgUrl: imgUrl, height: height, width: width});
 
-// When an user is playing
-io.on('playing', function(data){
-    socket.broadcast.emit('playing', {socket: socket.username});
-});
+        //When player is writting
+        socket.on('message', function(data){
+            socket.broadcast.emit('message', {username: socket.username, message: data.message});
+        });
+
+    });
+    //WHen player disconnect from channel
+    io.on('disconnect', function(socket){
+
+    });
+
+}else{
+    console.error("Missing parementers: npm start -- <height> <width> <imgUrl>");
+    process.exit(1);
+}

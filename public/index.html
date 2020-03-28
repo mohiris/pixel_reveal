@@ -31,7 +31,7 @@
       // ---- @initialization ----
       var socket = io.connect();
       socket.on('client_connect', function (data) {
-
+        
       });
       // --- @functions ---
       var sendMessage = function(msg){
@@ -62,6 +62,10 @@
       jQuery('#message').on('change', function(){
         sendMessage(jQuery(this).val());
     
+      });
+
+      socket.on('init',function(data){
+        jQuery('#game').css('background-image', 'url(' + data.imgUrl + ')');
       });
 
       socket.on('message', function(data){

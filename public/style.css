@@ -83,3 +83,9 @@ input#send:hover{
 }
 
 .msg{color: rgba(0,0,0,0.5);}
+
+#game{
+    background-image: url('bob.png');
+    background-position: center;
+    background-size: cover;
+}
