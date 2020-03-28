@@ -4,22 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Pixel</title>
-    <link rel="stylesheet" href="/public/.css" />
+    <link rel="stylesheet" href="style.css" />
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-    <h1>My pixel</h1>
-    <div class="container">
-        <canvas id="canvas"> 
+  <h1>My pixel</h1>
+    <div id="container" class="container">
+     
+        <div id="gameboard" class="gameboard">
+          <div id="game" class="game">
 
-        </canvas>
+          </div>
+          <div id="chat" class="chat">
+            
+          </div>
+          <div class="msg-input">
+            <input type="text" name="message" id="message" placeholder="type a message...">
+            <input type="button" value="send" id="send">
+          </div>
+        </div>
     </div>
 
     <script>
       var socket = io.connect();
-      socket.on('news', function (data) {
-        console.log(data);
+      socket.on('client_connect', function (data) {
+        console.log("data: ", data);
         socket.emit('my other event', { my: 'data' });
+      });
+
+      socket.on('playing', function(data){
+
       });
     </script>
 </body>
