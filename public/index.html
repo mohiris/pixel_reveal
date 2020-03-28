@@ -80,35 +80,37 @@
       ctx = canvas[0].getContext("2d");
 
       var w = 550;
-      var squareW = Math.floor(w/2);
+      var squareW = Math.floor(w/4);
 
       var y = 550;
-      var squareY = Math.floor(y/2);
+      var squareY = Math.floor(y/4);
+      console.log(squareW);
+      console.log(squareY);
 
       ctx.beginPath();
-      for (var i = 0; i < w; i += squareW ) {
+      for (let i = 0; i < w; i += squareW ) {
         ctx.fillStyle = getRandomColor();
         ctx.fillRect(0, 0, squareW, squareW);
         ctx.fillStyle = getRandomColor();
-        ctx.fillRect(0, squareW, squareW, squareW);
+        ctx.fillRect(0, i, squareW, squareW);
         ctx.fillStyle = getRandomColor();
-        ctx.fillRect(squareW, 0, squareW, squareW);
+        ctx.fillRect(i, 0, squareW, squareW);
         ctx.fillStyle = getRandomColor();
-        ctx.fillRect(squareW, squareW, squareW, squareW);
+        ctx.fillRect(i, i, squareW, squareW);
         
       }
       ctx.closePath();
 
       ctx.beginPath();
-      for (var i = 0; i < y; i += squareY ) {
+      for (let j = 0; i < y; i += squareY ) {
         ctx.fillStyle = getRandomColor();
         ctx.fillRect(0, 0, squareY, squareY);
         ctx.fillStyle = getRandomColor();
-        ctx.fillRect(0, squareY, squareY, squareY);
+        ctx.fillRect(0, j, squareY, squareY);
         ctx.fillStyle = getRandomColor();
-        ctx.fillRect(squareY, 0, squareY, squareY);
+        ctx.fillRect(j, 0, squareY, squareY);
         ctx.fillStyle = getRandomColor();
-        ctx.fillRect(squareY, squareY, squareY, squareY);
+        ctx.fillRect(j, j, squareY, squareY);
       }
       ctx.closePath();
 
