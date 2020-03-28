@@ -7,8 +7,12 @@ html,body{
 }
 
 h1{
-    text-align:center;
-    padding:20px;
+    text-align: center;
+    padding: 20px;
+    color: #2fea;
+    font-size: 50px;
+    -webkit-text-stroke-width: 3px;
+    -webkit-text-stroke-color: #fff;
 }
 .container{
     position: relative;
