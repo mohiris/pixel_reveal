@@ -30,9 +30,6 @@
     // ---- @initialization ----     
     var imgUrl;
 
-    const width = 550;
-    const height = 550;
-
     var socket = io.connect();
     socket.on('client_connect', function (data) {
 
@@ -77,25 +74,29 @@
 
     ctx = canvas[0].getContext("2d");
 
+    /**
+     *
+     */
+    canvas[0].addEventListener("click", function (e) {
+      socket.emit('hid', {
+        x: e.layerX,
+        y: e.layerY
+      });
+    });
+
     socket.on('init', function (data) {
       canvas.css('background-image', 'url(' + data.imgUrl + ')');
 
-      var squareW = (width / data.width);
-      var squareY = (height / data.height);
-
       ctx.beginPath();
 
-      for(var i = 0; i <= width; i += squareW) {
-        for(var y = 0; y <= height; y += squareY) {
-          addPixel(i, y, squareW, squareY);
-        }
-      }
-
+      data.pixels.forEach(elem => {
+        addPixel(elem.x, elem.y, elem.width, elem.height);
+      });
       ctx.closePath();
 
     });
 
-    function addPixel(x, y , width, height) {
+    function addPixel(x, y, width, height) {
       ctx.fillStyle = getRandomColor();
       ctx.fillRect(x, y, width, height);
     }
