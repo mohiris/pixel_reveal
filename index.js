@@ -16,7 +16,7 @@ if(args.length >= 3){
 
     height = args[0];
     width = args[1];
-    //imgUrl = args[2];
+    imgUrl = args[2];
 
     app.use(express.static(__dirname + '/public'));
     server.listen(8080);
@@ -29,9 +29,8 @@ if(args.length >= 3){
 
     io.on('connection', function (socket) {
 
-        var userIncrement = 0;
-        socket.username = 'Anon-' + userIncrement;
-        userIncrement++;
+        var randUser = Math.floor(Math.random() * 1000);
+        socket.username = 'Anon-' + randUser;
 
         console.log('connected')
 
@@ -39,7 +38,7 @@ if(args.length >= 3){
 
         //When player is writting
         socket.on('message', function(data){
-            socket.broadcast.emit('message', {username: socket.username, message: data.message});
+            io.sockets.emit('message', {username: socket.username, message: data.message});
         });
 
     });

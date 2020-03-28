@@ -50,12 +50,12 @@ h1{
 }
 
 .game{
-    height: 550px;
-    width: 550px;
     position: absolute;
     left: 0;
-    background-color: #f2f2f2;
     margin: 5px;
+    background-position: center;
+    background-size: cover;
+    background-color: #f2f2f2;
 }
 
 
@@ -84,8 +84,9 @@ input#send:hover{
 
 .msg{color: rgba(0,0,0,0.5);}
 
-#game{
-    background-image: url('bob.png');
-    background-position: center;
-    background-size: cover;
+
+.layer{
+    position: absolute;
+    left: 0;
+    margin: 5px;
 }

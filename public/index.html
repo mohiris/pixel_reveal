@@ -7,15 +7,14 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="../Canvas.js"></script>
 </head>
 <body>
   <h1>My Pixel Challenge</h1>
     <div id="container" class="container">
      
         <div id="gameboard" class="gameboard">
-          <div id="game" class="game">
-
-          </div>
+          <canvas id="canvas" class="game" width="550" height="550"></canvas>
           <div id="chat" class="chat">
 
           </div>
@@ -27,8 +26,45 @@
     </div>
 
     <script>
+class Canvas{
+    
+    constructor(width, height, imgUrl){
+        this.width = width;
+        this.height = height;
+        this.imgUrl = imgUrl;
+    }
 
+
+    render(canvas){
+    ctx = canvas.getContext("2d");
+    
+    canvas.width = this.width; //550;
+    canvas.height = this.height;//550;
+    
+    let background = new Image();
+    background.src = this.imgUrl;
+    
+    // Make sure the image is loaded first otherwise nothing will draw.
+    background.onload = function(){
+        ctx.drawImage(background,0,0);
+    }
+}
+
+}
       // ---- @initialization ----
+      var imgUrl= 'https://i.picsum.photos/id/400/500/500.jpg'
+
+      var canvas = jQuery('#canvas');
+      canvas.css('background-image', 'url(' + imgUrl + ')');
+
+      ctx = canvas[0].getContext("2d");
+
+      ctx.beginPath();
+      ctx.fillRect(125, 35, 50, 50);
+      ctx.closePath();
+      ctx.clearRect(0,0,50,50);
+
+      
       var socket = io.connect();
       socket.on('client_connect', function (data) {
         
@@ -57,15 +93,17 @@
       // ---- @events trigger ----
       jQuery("#send").on('click', function(){
         sendMessage(jQuery('#message').val());
+        jQuery('#message').val('')
       });
 
       jQuery('#message').on('change', function(){
         sendMessage(jQuery(this).val());
+        jQuery(this).val('')
     
       });
 
       socket.on('init',function(data){
-        jQuery('#game').css('background-image', 'url(' + data.imgUrl + ')');
+        canvas.css('background-image', 'url(' + data.imgUrl + ')');
       });
 
       socket.on('message', function(data){
