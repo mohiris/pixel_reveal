@@ -1,119 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Pixel Challenge</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Pixel Challenge</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
 </head>
+
 <body>
   <h1>My Pixel Challenge</h1>
-    <div id="container" class="container">
-     
-        <div id="gameboard" class="gameboard">
-          <canvas id="canvas" class="game" width="550" height="550"></canvas>
-          <div id="chat" class="chat">
+  <div id="container" class="container">
 
-          </div>
-          <div class="msg-input">
-            <input type="text" name="message" id="message" placeholder="type a message...">
-            <input type="button" value="send" id="send">
-          </div>
-        </div>
+    <div id="gameboard" class="gameboard">
+      <canvas id="canvas" class="game" width="550" height="550"></canvas>
+      <div id="chat" class="chat">
+
+      </div>
+      <div class="msg-input">
+        <input type="text" name="message" id="message" placeholder="type a message...">
+        <input type="button" value="send" id="send">
+      </div>
     </div>
+  </div>
 
-    <script>
-      // ---- @initialization ----     
-      var imgUrl; 
-      var socket = io.connect();
-      socket.on('client_connect', function (data) {
-        
-      });
-      // --- @functions ---
-      var sendMessage = function(msg){
-          socket.emit('message', { message: msg});
-      };
+  <script>
+    // ---- @initialization ----     
+    var imgUrl;
 
-      var chat = function(data){
-        
-        let c = getRandomColor();
-        let username = "<span style=" + "color:" + c + ">" + data.username + ': </span>';
-        let child = username + '<span class="msg">' + data.message + '</span>' + '</br>';
-        jQuery("#chat").append(child); 
-      };
+    const width = 550;
+    const height = 550;
 
-      var getRandomColor = function () {
-        let letters = '0123456789ABCDEF';
-        let color = '#';
-        for (let i = 0; i < 6; i++) {
-          color += letters[Math.floor(Math.random() * 16)];
+    var socket = io.connect();
+    socket.on('client_connect', function (data) {
+
+    });
+    // --- @functions ---
+    var sendMessage = function (msg) {
+      socket.emit('message', { message: msg });
+    };
+
+    var chat = function (data) {
+
+      let c = getRandomColor();
+      let username = "<span style=" + "color:" + c + ">" + data.username + ': </span>';
+      let child = username + '<span class="msg">' + data.message + '</span>' + '</br>';
+      jQuery("#chat").append(child);
+    };
+
+    var getRandomColor = function () {
+      let letters = '0123456789ABCDEF';
+      let color = '#';
+      for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    };
+    // ---- @events trigger ----
+    jQuery("#send").on('click', function () {
+      sendMessage(jQuery('#message').val());
+      jQuery('#message').val('')
+    });
+
+    jQuery('#message').on('change', function () {
+      sendMessage(jQuery(this).val());
+      jQuery(this).val('')
+
+    });
+
+    // ---- @Canvas ----
+
+    var canvas = jQuery('#canvas');
+    canvas.css('background-image', 'url(' + imgUrl + ')');
+
+    ctx = canvas[0].getContext("2d");
+
+    socket.on('init', function (data) {
+      canvas.css('background-image', 'url(' + data.imgUrl + ')');
+
+      var squareW = (width / data.width);
+      var squareY = (height / data.height);
+
+      ctx.beginPath();
+      for (let i = 0; i <= width; i += squareW) {
+        for(let j = 0; j <= height; j += squareY){
+          ctx.fillStyle = getRandomColor();
+          ctx.fillRect(i, 0, squareW, squareY);
+          ctx.fillStyle = getRandomColor();
+          ctx.fillRect(0, j, squareW, squareY);
+          ctx.fillStyle = getRandomColor();
+          ctx.fillRect(i, j, squareW, squareY);
         }
-        return color;
-      };
-      // ---- @events trigger ----
-      jQuery("#send").on('click', function(){
-        sendMessage(jQuery('#message').val());
-        jQuery('#message').val('')
-      });
-
-      jQuery('#message').on('change', function(){
-        sendMessage(jQuery(this).val());
-        jQuery(this).val('')
-    
-      });
-
-      socket.on('init',function(data){
-        canvas.css('background-image', 'url(' + data.imgUrl + ')');
-      });
-
-      socket.on('message', function(data){
-        chat(data);
-      });
-
-      // ---- @Canvas ----
-
-      var canvas = jQuery('#canvas');
-      canvas.css('background-image', 'url(' + imgUrl + ')');
-
-      ctx = canvas[0].getContext("2d");
-
-      var w = 550;
-      var squareW = Math.floor(w/4);
-
-      var y = 550;
-      var squareY = Math.floor(y/4);
-      console.log(squareW);
-      console.log(squareY);
-
-      ctx.beginPath();
-      for (let i = 0; i < w; i += squareW ) {
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(0, 0, squareW, squareW);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(0, i, squareW, squareW);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(i, 0, squareW, squareW);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(i, i, squareW, squareW);
-        
       }
       ctx.closePath();
 
-      ctx.beginPath();
-      for (let j = 0; i < y; i += squareY ) {
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(0, 0, squareY, squareY);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(0, j, squareY, squareY);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(j, 0, squareY, squareY);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(j, j, squareY, squareY);
-      }
-      ctx.closePath();
+    });
 
-    </script>
+    socket.on('message', function (data) {
+      chat(data);
+    });
+
+  </script>
 </body>
+
 </html>

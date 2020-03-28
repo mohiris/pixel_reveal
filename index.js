@@ -34,7 +34,7 @@ if(args.length >= 3){
 
         console.log('connected')
 
-        socket.emit('init', {imgUrl: imgUrl, height: height, width: width});
+        socket.emit('init', {imgUrl, height, width});
 
         //When player is writting
         socket.on('message', function(data){
