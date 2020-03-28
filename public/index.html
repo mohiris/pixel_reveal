@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="../Canvas.js"></script>
 </head>
 <body>
   <h1>My Pixel Challenge</h1>
@@ -26,45 +25,8 @@
     </div>
 
     <script>
-class Canvas{
-    
-    constructor(width, height, imgUrl){
-        this.width = width;
-        this.height = height;
-        this.imgUrl = imgUrl;
-    }
-
-
-    render(canvas){
-    ctx = canvas.getContext("2d");
-    
-    canvas.width = this.width; //550;
-    canvas.height = this.height;//550;
-    
-    let background = new Image();
-    background.src = this.imgUrl;
-    
-    // Make sure the image is loaded first otherwise nothing will draw.
-    background.onload = function(){
-        ctx.drawImage(background,0,0);
-    }
-}
-
-}
-      // ---- @initialization ----
-      var imgUrl= 'https://i.picsum.photos/id/400/500/500.jpg'
-
-      var canvas = jQuery('#canvas');
-      canvas.css('background-image', 'url(' + imgUrl + ')');
-
-      ctx = canvas[0].getContext("2d");
-
-      ctx.beginPath();
-      ctx.fillRect(125, 35, 50, 50);
-      ctx.closePath();
-      ctx.clearRect(0,0,50,50);
-
-      
+      // ---- @initialization ----     
+      var imgUrl; 
       var socket = io.connect();
       socket.on('client_connect', function (data) {
         
@@ -109,6 +71,26 @@ class Canvas{
       socket.on('message', function(data){
         chat(data);
       });
+
+      // ---- @Canvas ----
+
+      var canvas = jQuery('#canvas');
+      canvas.css('background-image', 'url(' + imgUrl + ')');
+
+      ctx = canvas[0].getContext("2d");
+      console.log(550/2);
+      ctx.beginPath();
+      ctx.fillStyle = getRandomColor();
+      ctx.fillRect(0, 0, 275, 275);
+      ctx.fillStyle = getRandomColor();
+      ctx.fillRect(275, 0, 275, 275);
+      ctx.fillStyle = getRandomColor();
+      ctx.fillRect(0, 275, 275, 275);
+      ctx.fillStyle = getRandomColor();
+      ctx.fillRect(275, 275, 275, 275);
+      ctx.closePath();
+      ctx.clearRect(0,0,275,275);
+
     </script>
 </body>
 </html>

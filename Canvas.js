@@ -1,4 +1,4 @@
-class Canvas{
+export class Canvas{
     
     constructor(width, height, imgUrl){
         this.width = width;
