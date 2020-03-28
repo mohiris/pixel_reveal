@@ -78,18 +78,39 @@
       canvas.css('background-image', 'url(' + imgUrl + ')');
 
       ctx = canvas[0].getContext("2d");
-      console.log(550/2);
+
+      var w = 550;
+      var squareW = Math.floor(w/2);
+
+      var y = 550;
+      var squareY = Math.floor(y/2);
+
       ctx.beginPath();
-      ctx.fillStyle = getRandomColor();
-      ctx.fillRect(0, 0, 275, 275);
-      ctx.fillStyle = getRandomColor();
-      ctx.fillRect(275, 0, 275, 275);
-      ctx.fillStyle = getRandomColor();
-      ctx.fillRect(0, 275, 275, 275);
-      ctx.fillStyle = getRandomColor();
-      ctx.fillRect(275, 275, 275, 275);
+      for (var i = 0; i < w; i += squareW ) {
+        ctx.fillStyle = getRandomColor();
+        ctx.fillRect(0, 0, squareW, squareW);
+        ctx.fillStyle = getRandomColor();
+        ctx.fillRect(0, squareW, squareW, squareW);
+        ctx.fillStyle = getRandomColor();
+        ctx.fillRect(squareW, 0, squareW, squareW);
+        ctx.fillStyle = getRandomColor();
+        ctx.fillRect(squareW, squareW, squareW, squareW);
+        
+      }
       ctx.closePath();
-      ctx.clearRect(0,0,275,275);
+
+      ctx.beginPath();
+      for (var i = 0; i < y; i += squareY ) {
+        ctx.fillStyle = getRandomColor();
+        ctx.fillRect(0, 0, squareY, squareY);
+        ctx.fillStyle = getRandomColor();
+        ctx.fillRect(0, squareY, squareY, squareY);
+        ctx.fillStyle = getRandomColor();
+        ctx.fillRect(squareY, 0, squareY, squareY);
+        ctx.fillStyle = getRandomColor();
+        ctx.fillRect(squareY, squareY, squareY, squareY);
+      }
+      ctx.closePath();
 
     </script>
 </body>
