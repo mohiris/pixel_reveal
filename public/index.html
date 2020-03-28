@@ -84,14 +84,10 @@
       var squareY = (height / data.height);
 
       ctx.beginPath();
-      for (let i = 0; i <= width; i += squareW) {
-        for(let j = 0; j <= height; j += squareY){
-          ctx.fillStyle = getRandomColor();
-          ctx.fillRect(i, 0, squareW, squareY);
-          ctx.fillStyle = getRandomColor();
-          ctx.fillRect(0, j, squareW, squareY);
-          ctx.fillStyle = getRandomColor();
-          ctx.fillRect(i, j, squareW, squareY);
+
+      for(var i = 0; i <= width; i += squareW) {
+        for(var y = 0; y <= height; y += squareY) {
+          addPixel(i, y, squareW, squareY);
         }
       }
 
