@@ -80,36 +80,57 @@
     socket.on('init', function (data) {
       canvas.css('background-image', 'url(' + data.imgUrl + ')');
 
-      var squareW = Math.floor(width / data.width);
-      var squareY = Math.floor(height / data.height);
+      //var squareW = Math.floor(width / data.width);
+      //var squareY = Math.floor(height / data.height);
+
+      var pixelWidth = width / data.width;
+      var pixelHeight = height / data.height;
+
+      var margeWidth = 0;
+      var margeHeight = 0;
 
       ctx.beginPath();
+
+      for(var i = 1; i <= data.height; i++) {
+        for(var y = 1; y <= data.width; y++) {
+          console.log(`pos x = ${margeWidth}, pos y = ${margeHeight}, width: ${pixelWidth}, height: ${pixelHeight}`)
+          addPixel(margeWidth, margeHeight, pixelWidth, pixelHeight);
+          margeWidth += pixelWidth;
+        }
+        margeWidth = 0;
+        margeHeight += pixelHeight;
+      }
+
+      ctx.closePath();
+
+
+      /**ctx.beginPath();
+  
       for (var i = 0; i < width; i += squareW) {
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(0, 0, squareW, squareW);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(0, squareW, squareW, squareW);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(squareW, 0, squareW, squareW);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(squareW, squareW, squareW, squareW);
-
+        addPixel(0, 0, squareW, squareW);
+        addPixel(0, squareW, squareW, squareW);
+        addPixel(squareW, 0, squareW, squareW);
+        addPixel(squareW, squareW, squareW, squareW)
       }
-      ctx.closePath();
 
+      ctx.closePath();
       ctx.beginPath();
+
       for (var i = 0; i < height; i += squareY) {
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(0, 0, squareY, squareY);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(0, squareY, squareY, squareY);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(squareY, 0, squareY, squareY);
-        ctx.fillStyle = getRandomColor();
-        ctx.fillRect(squareY, squareY, squareY, squareY);
+        addPixel(0, 0, squareY, squareY);
+        addPixel(0, squareY, squareY, squareY);
+        addPixel(squareY, 0, squareY, squareY);
+        addPixel(squareY, squareY, squareY, squareY)
       }
+
       ctx.closePath();
+      */
     });
+
+    function addPixel(x, y , width, height) {
+      ctx.fillStyle = getRandomColor();
+      ctx.fillRect(x, y, width, height);
+    }
 
     socket.on('message', function (data) {
       chat(data);
