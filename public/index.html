@@ -94,9 +94,15 @@
           ctx.fillRect(i, j, squareW, squareY);
         }
       }
+
       ctx.closePath();
 
     });
+
+    function addPixel(x, y , width, height) {
+      ctx.fillStyle = getRandomColor();
+      ctx.fillRect(x, y, width, height);
+    }
 
     socket.on('message', function (data) {
       chat(data);
