@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Pixel</title>
+    <title>My Pixel Challenge</title>
     <link rel="stylesheet" href="style.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
@@ -26,14 +27,45 @@
     </div>
 
     <script>
+
+      // ---- @initialization ----
       var socket = io.connect();
       socket.on('client_connect', function (data) {
-        console.log("data: ", data);
-        socket.emit('my other event', { my: 'data' });
+
+      });
+      // --- @functions ---
+      var sendMessage = function(msg){
+          socket.emit('message', { message: msg});
+      };
+
+      var chat = function(data){
+        
+        let c = getRandomColor();
+        let username = "<span style=" + "color:" + c + ">" + data.username + ': </span>';
+        let child = username + '<span class="msg">' + data.message + '</span>' + '</br>';
+        jQuery("#chat").append(child); 
+      };
+
+      var getRandomColor = function () {
+        let letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+      };
+      // ---- @events trigger ----
+      jQuery("#send").on('click', function(){
+        sendMessage(jQuery('#message').val());
       });
 
-      socket.on('playing', function(data){
+      jQuery('#message').on('change', function(){
+        sendMessage(jQuery(this).val());
+    
+      });
 
+      socket.on('message', function(data){
+        chat(data);
       });
     </script>
 </body>

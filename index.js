@@ -15,7 +15,6 @@ const args = process.argv.slice(2);
 
 var height, width, imgUrl;
 
-console.log(args);
 //GET ARGS FROM SERVER: npm start -- <height> <width> <imgUrl>
 if(args.length >= 3){
     height = args[0];
@@ -31,20 +30,26 @@ app.get('/', function (req, res) {
 });
 
 io.on('connection', function (socket) {
+
+    var userIncrement = 0;
+    socket.username = 'Anon-' + userIncrement;
+    userIncrement++;
+
+    console.log('connected')
     socket.emit('client_connect', { hello: 'FROM THE SERVER' });
-    socket.on('my other event', function (data) {
-    console.log(data);
-  });
+
+    //When player is writting
+    socket.on('message', function(data){
+        socket.emit('message', {username: socket.username, message: data.message});
+    });
+
 });
 //WHen player disconnect from channel
 io.on('disconnect', function(socket){
 
 });
 
-//When playing is writting
-io.on('message', function(from, msg){
 
-});
 
 // When an user is playing
 io.on('playing', function(data){
