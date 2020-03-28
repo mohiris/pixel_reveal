@@ -25,6 +25,17 @@ if (args.length >= 3) {
     var squareW = (widthMap / width);
     var squareY = (heightMap / height);
 
+    for (var x = 0; x <= widthMap; x += squareW) {
+        for (var y = 0; y <= heightMap; y += squareY) {
+            pixels.push({
+                x,
+                y,
+                width: squareW,
+                height: squareY
+            });
+        }
+    }
+
     app.use(express.static(__dirname + '/public'));
     server.listen(8080);
 
@@ -39,17 +50,6 @@ if (args.length >= 3) {
         var randUser = Math.floor(Math.random() * 1000);
         socket.username = 'Anon-' + randUser;
 
-        for (var x = 0; x <= widthMap; x += squareW) {
-            for (var y = 0; y <= heightMap; y += squareY) {
-                pixels.push({
-                    x,
-                    y,
-                    width: squareW,
-                    height: squareY
-                });
-            }
-        }
-
         socket.emit('init', { imgUrl, pixels });
 
         //When player is writting
@@ -61,7 +61,12 @@ if (args.length >= 3) {
          * 
          */
         socket.on('hid', function (data) {
-            console.log(data.x, data.y);
+            const test = pixels.filter((elem) => {
+                return elem.x >= data.x && elem.y <= data.y
+            });
+
+            console.log(data)
+            console.log(test)
         });
 
     });
