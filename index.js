@@ -69,7 +69,7 @@ if (args.length >= 3) {
                 && data.y <= elem.y + elem.height
             ));
 
-            socket.emit('init', {
+            io.sockets.emit('init', {
                 imgUrl,
                 pixels,
                 pixelsHidden

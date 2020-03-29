@@ -79,8 +79,8 @@
      */
     canvas[0].addEventListener("click", function (e) {
       socket.emit('hidden', {
-        x: e.layerX,
-        y: e.layerY
+        x: e.offsetX,
+        y: e.offsetY
       });
     });
 
@@ -95,7 +95,6 @@
       ctx.closePath();
 
       // Doit clear ici
-      console.log(data.pixelsHidden)
       data.pixelsHidden.forEach(elem => {
         ctx.clearRect(elem[0].x, elem[0].y, elem[0].width, elem[0].height); 
       });
