@@ -47,14 +47,6 @@
       jQuery("#chat").append(child);
     };
 
-    var getRandomColor = function () {
-      let letters = '0123456789ABCDEF';
-      let color = '#';
-      for (let i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-      }
-      return color;
-    };
     // ---- @events trigger ----
     jQuery("#send").on('click', function () {
       sendMessage(jQuery('#message').val());
@@ -79,8 +71,8 @@
      */
     canvas[0].addEventListener("click", function (e) {
       socket.emit('hidden', {
-        x: e.layerX,
-        y: e.layerY
+        x: e.offsetX,
+        y: e.offsetY
       });
     });
 
@@ -90,20 +82,20 @@
       ctx.beginPath();
 
       data.pixels.forEach(elem => {
-        addPixel(elem.x, elem.y, elem.width, elem.height);
+        addPixel(elem.x, elem.y, elem.width, elem.height, elem.color);
       });
       ctx.closePath();
 
-      // Doit clear ici
-      console.log(data.pixelsHidden)
       data.pixelsHidden.forEach(elem => {
-        ctx.clearRect(elem[0].x, elem[0].y, elem[0].width, elem[0].height); 
+        if (elem[0]) {
+          ctx.clearRect(elem[0].x, elem[0].y, elem[0].width, elem[0].height); 
+        }
       });
 
     });
 
-    function addPixel(x, y, width, height) {
-      ctx.fillStyle = getRandomColor();
+    function addPixel(x, y, width, height, color) {
+      ctx.fillStyle = color;
       ctx.fillRect(x, y, width, height);
     }
 

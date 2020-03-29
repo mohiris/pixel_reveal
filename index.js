@@ -11,6 +11,15 @@ app.use(function (req, res, next) {
 const args = process.argv.slice(2);
 var height, width, imgUrl = 'https://www.challenges.fr/assets/img/2008/08/12/cover-r4x3w1000-58352afa3b690-bugs-bunny-3-g.jpg';
 
+var getRandomColor = function () {
+    let letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+};
+
 //GET ARGS FROM SERVER: npm start -- <height> <width> <imgUrl>
 if (args.length >= 3) {
 
@@ -32,7 +41,8 @@ if (args.length >= 3) {
                 x,
                 y,
                 width: squareW,
-                height: squareY
+                height: squareY,
+                color: getRandomColor()
             });
         }
     }
@@ -69,7 +79,7 @@ if (args.length >= 3) {
                 && data.y <= elem.y + elem.height
             ));
 
-            socket.emit('init', {
+            io.emit('init', {
                 imgUrl,
                 pixels,
                 pixelsHidden
