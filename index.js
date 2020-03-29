@@ -18,6 +18,7 @@ if (args.length >= 3) {
     width = args[1];
     imgUrl = args[2];
     pixels = [];
+    pixelsHidden = [];
 
     const widthMap = 550;
     const heightMap = 550;
@@ -25,8 +26,8 @@ if (args.length >= 3) {
     var squareW = (widthMap / width);
     var squareY = (heightMap / height);
 
-    for (var x = 0; x <= widthMap; x += squareW) {
-        for (var y = 0; y <= heightMap; y += squareY) {
+    for (var x = 0; x < widthMap; x += squareW) {
+        for (var y = 0; y < heightMap; y += squareY) {
             pixels.push({
                 x,
                 y,
@@ -50,7 +51,7 @@ if (args.length >= 3) {
         var randUser = Math.floor(Math.random() * 1000);
         socket.username = 'Anon-' + randUser;
 
-        socket.emit('init', { imgUrl, pixels });
+        socket.emit('init', { imgUrl, pixels, pixelsHidden });
 
         //When player is writting
         socket.on('message', function (data) {
@@ -60,13 +61,19 @@ if (args.length >= 3) {
         /**
          * 
          */
-        socket.on('hid', function (data) {
-            const test = pixels.filter((elem) => {
-                return elem.x >= data.x && elem.y <= data.y
-            });
+        socket.on('hidden', function (data) {
+            pixelsHidden.push(pixels.filter((elem) =>
+                elem.x <= data.x
+                && data.x <= elem.x + elem.width
+                && elem.y <= data.y
+                && data.y <= elem.y + elem.height
+            ));
 
-            console.log(data)
-            console.log(test)
+            socket.emit('init', {
+                imgUrl,
+                pixels,
+                pixelsHidden
+            });
         });
 
     });

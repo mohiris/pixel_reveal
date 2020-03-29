@@ -78,7 +78,7 @@
      *
      */
     canvas[0].addEventListener("click", function (e) {
-      socket.emit('hid', {
+      socket.emit('hidden', {
         x: e.layerX,
         y: e.layerY
       });
@@ -93,6 +93,12 @@
         addPixel(elem.x, elem.y, elem.width, elem.height);
       });
       ctx.closePath();
+
+      // Doit clear ici
+      console.log(data.pixelsHidden)
+      data.pixelsHidden.forEach(elem => {
+        ctx.clearRect(elem.x, elem.y, elem.width, elem.height); 
+      });
 
     });
 
