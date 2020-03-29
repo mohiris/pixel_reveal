@@ -64,7 +64,9 @@ h1{
 }
 
 input#message{
-    width: 81%;
+    width: 80.3%;
+    border: none;
+    margin: 3px;
 }
 
 input#send{
