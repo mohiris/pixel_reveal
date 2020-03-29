@@ -97,7 +97,7 @@
       // Doit clear ici
       console.log(data.pixelsHidden)
       data.pixelsHidden.forEach(elem => {
-        ctx.clearRect(elem.x, elem.y, elem.width, elem.height); 
+        ctx.clearRect(elem[0].x, elem[0].y, elem[0].width, elem[0].height); 
       });
 
     });
