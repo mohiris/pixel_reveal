@@ -40,9 +40,7 @@
     };
 
     var chat = function (data) {
-
-      let c = getRandomColor();
-      let username = "<span style=" + "color:" + c + ">" + data.username + ': </span>';
+      let username = "<span style=" + "color:" +  ">" + data.username + ': </span>';
       let child = username + '<span class="msg">' + data.message + '</span>' + '</br>';
       jQuery("#chat").append(child);
     };
